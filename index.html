@@ -15,6 +15,7 @@
 			<div class="style-box">
 				<range :value.sync="translateX" :max="300"></range>
 				<div class="style-info">translateX:{{ translateX.toFixed(2) }}px </div>
+				<input type="number" v-model="translateX"></input>
 			</div>
 			<div class="style-box">
 				<range :value.sync="translateY" :max="300"></range>
@@ -27,7 +28,6 @@
 			<div class="style-box">
 				<range :value.sync="skewY" :max="300"></range>
 				<div class="style-info">skewY:{{ skewY.toFixed(2) }}deg </div>
-				<input type="text" v-model={{ skewY }}></input>
 			</div>
 		</div>
 		<div class="display-panel">
@@ -78,9 +78,6 @@
 						document.removeEventListener("mouseup",this.release);
 					}
 				},
-				/*
-				* position的变化watch改为computed是否能提高可复用性
-				*/
 				position:function(val){
 					this.value = (val / (this.$els.bg.clientWidth - this.$els.slider.clientWidth)) * this.max;
 				}
