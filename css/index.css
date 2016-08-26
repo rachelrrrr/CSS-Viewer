@@ -1,0 +1,82 @@
+body,html{
+	margin: 0;
+	color: #626262;
+    font: 16px/28px "Source Sans Pro", HelveticaNeue, "Helvetica Neue", Helvetica, Arial, sans-serif;
+	width:100%;
+	text-align: center;
+}
+
+#container{
+	margin:0;
+	padding:0 20%;
+}
+
+@media screen and (max-width: 750px) { 
+	body{
+		overflow: hidden;
+	}
+	#container {
+		padding:0;
+	}
+}
+
+.logo{
+	padding:50px;
+}
+
+.style-box{
+	padding:15px 5px;
+}
+
+.range{
+	vertical-align: middle;
+	display: inline-block;
+	height:25px;
+	width:300px;
+	position:relative;
+}
+
+.style-info{
+	line-height: 25px;
+	vertical-align: middle;
+	display: inline-block;
+	height:25px;
+	width:150px;
+	text-align: right;
+}
+
+.range-slider{
+	width:25px;
+	height:25px;
+	border-radius: 4px;
+	background-color:rgb(230,230,230); 
+	position:absolute;
+	top:0;
+	left:0;
+	border:1px solid #d3d3d3;
+}
+
+.range-bg{
+	width:300px;
+	height:8px;
+	border:1px solid rgb(217,217,217);
+	background-color: rgb(246,246,246);
+	border-radius: 2px;
+	position: absolute;
+	top:50%;
+	margin-top:-4px;
+	box-shadow: 0 1px 5px #eee inset; 
+}
+
+#displayBlock{
+	width: 100px;
+	height: 100px;
+	background-color: #ddd;
+}
+
+.display-panel{
+	margin: 40px auto 0 auto;
+	width: 400px;
+	text-align: center;
+	position: relative;
+}
