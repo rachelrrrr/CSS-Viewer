@@ -12,23 +12,10 @@
 		<img src="images/logo.png" alt="CSS Viwer logo">
 	</div>
 		<div class="setting-panel">
-			<div class="style-box">
-				<range :value.sync="translateX" :max="300"></range>
-				<div class="style-info">translateX:{{ translateX.toFixed(2) }}px </div>
-				<input type="number" v-model="translateX"></input>
-			</div>
-			<div class="style-box">
-				<range :value.sync="translateY" :max="300"></range>
-				<div class="style-info">translateY:{{ translateY.toFixed(2) }}px </div>
-			</div>
-			<div class="style-box">
-				<range :value.sync="skewX" :max="300"></range>
-				<div class="style-info">skewX:{{ skewX.toFixed(2) }}deg </div>
-			</div>
-			<div class="style-box">
-				<range :value.sync="skewY" :max="300"></range>
-				<div class="style-info">skewY:{{ skewY.toFixed(2) }}deg </div>
-			</div>
+			<unit :value-str.sync="translateX" title=translateX></unit>
+			<unit :value-str.sync="translateY" title=translateY></unit>
+			<unit :value-str.sync="skewX" title=skewX></unit>
+			<unit :value-str.sync="skewX" title=skewY></unit>
 		</div>
 		<div class="display-panel">
 			<div id="displayBlock" :style="{ transform: styleTransform }"></div>
@@ -39,10 +26,50 @@
 				<div class="range-slider" :style="{ left:position + 'px' }" @mousedown="hold" v-el:slider></div>
 			</div>
 		</template>
+		<template id="unitTemplate">
+			<div class="unit">
+				<range :value.sync="value" :max="300"></range>
+				<div class="style-info">{{ title }}：</div>
+			</div>
+		</template>
 	</div>
 	<script src="js/vue.js"></script><!-- 
 	<script src="http://cdn.bootcss.com/vue/1.0.26/vue.min.js"></script> -->
 	<script>
+	var componentUnit = Vue.extend({
+		template:"#unitTemplate",
+		data:function(){
+			return {
+				value:this.value
+			};
+		},
+		component:function(){
+			return {
+				"range":componentRange
+			};
+		},
+		props:{
+			valueStr:{
+				type:String,
+				twoWay:true,
+				required:true
+			},
+			title:{
+				type:String,
+				required:true
+			}
+		},
+		computed:{
+			valueStr:{
+				get:function(){
+					this.valueStr = this.value + "";
+				},
+				set:function(val){
+					this.value = Number(val);
+				}
+			}
+		}
+	});
 		var componentRange = Vue.extend({
 			template:"#rangeTemplate",
 			data:function(){
@@ -111,18 +138,21 @@
 				}
 			}
 		})
+
 		Vue.component("range",componentRange);
+		Vue.component("unit",componentUnit);
+
 		var vm = new Vue({
 			el:"#container",
 			component:{
-				"range":componentRange
+				"unit":componentUnit
 			},
 			data:{
-				translateX:150,
-				translateY:0,
-				skewX:0,
-				skewY:0,
-				scale:0
+				translateX:"150",
+				translateY:"0",
+				skewX:"0",
+				skewY:"0",
+				scale:"0"
 			},
 			computed:{
 				styleTransform:function(){

@@ -24,7 +24,8 @@ body,html{
 	padding:50px;
 }
 
-.style-box{
+.style-box
+,.unit{
 	padding:15px 5px;
 }
 
