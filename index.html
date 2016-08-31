@@ -12,10 +12,7 @@
 		<img src="images/logo.png" alt="CSS Viwer logo">
 	</div>
 		<div class="setting-panel">
-			<unit :value-str.sync="translateX" title=translateX></unit>
-			<unit :value-str.sync="translateY" title=translateY></unit>
-			<unit :value-str.sync="skewX" title=skewX></unit>
-			<unit :value-str.sync="skewX" title=skewY></unit>
+			<unit v-for="unit of units" :title="unit.name" :value-str.sync="unit.value" :math-unit="unit.mathunit"></unit>
 		</div>
 		<div class="display-panel">
 			<div id="displayBlock" :style="{ transform: styleTransform }"></div>
@@ -28,8 +25,8 @@
 		</template>
 		<template id="unitTemplate">
 			<div class="unit">
-				<range :value.sync="value" :max="300"></range>
-				<div class="style-info">{{ title }}：</div>
+				<range :value-num.sync="value" :max="300"></range>
+				<div class="style-info">{{ title }}：{{ valueStr }} {{ mathUnit }}</div>
 			</div>
 		</template>
 	</div>
@@ -40,7 +37,7 @@
 		template:"#unitTemplate",
 		data:function(){
 			return {
-				value:this.value
+				value:this.valueStr
 			};
 		},
 		component:function(){
@@ -57,16 +54,20 @@
 			title:{
 				type:String,
 				required:true
+			},
+			mathUnit:{
+				type:String,
+				required:true
 			}
 		},
 		computed:{
-			valueStr:{
+			value:{
 				get:function(){
-					this.valueStr = this.value + "";
+					return Number(this.valueStr);
 				},
 				set:function(val){
-					this.value = Number(val);
-				}
+					this.valueStr = val.toFixed(2) + "";
+				} 
 			}
 		}
 	});
@@ -74,13 +75,13 @@
 			template:"#rangeTemplate",
 			data:function(){
 				return {
-					position:this.value,
+					position:this.valueNum,
 					dragging:false,
 					dragOffsetX:0
 				};
 			},
 			props:{
-				value:{
+				valueNum:{
 					type:Number,
 					required:true,
 					twoWay:true
@@ -106,7 +107,7 @@
 					}
 				},
 				position:function(val){
-					this.value = (val / (this.$els.bg.clientWidth - this.$els.slider.clientWidth)) * this.max;
+					this.valueNum = (val / (this.$els.bg.clientWidth - this.$els.slider.clientWidth)) * this.max;
 				}
 			},
 			methods:{
@@ -148,18 +149,35 @@
 				"unit":componentUnit
 			},
 			data:{
-				translateX:"150",
-				translateY:"0",
-				skewX:"0",
-				skewY:"0",
-				scale:"0"
+				units:[
+					{
+						name:"translateX",
+						value:"150",
+						mathunit:"px"
+					},
+					{
+						name:"translateY",
+						value:"0",
+						mathunit:"px"
+					},
+					{
+						name:"skewX",
+						value:"0",
+						mathunit:"deg"
+					},
+					{
+						name:"skewY",
+						value:"0",
+						mathunit:"deg"
+					},
+				]
 			},
 			computed:{
 				styleTransform:function(){
-					var translateX = "translateX(" + this.translateX + "px)",
-						translateY = "translateY(" + this.translateY + "px)",
-						skewX = "skewX(" + this.skewX + "deg)",
-						skewY = "skewY(" + this.skewY + "deg)";
+					var translateX = "translateX(" + this.units[0].value + "px)",
+						translateY = "translateY(" + this.units[1].value + "px)",
+						skewX = "skewX(" + this.units[2].value + "deg)",
+						skewY = "skewY(" + this.units[3].value + "deg)";
 					return [translateX,translateY,skewX,skewY].join(" ");
 				}
 			}
